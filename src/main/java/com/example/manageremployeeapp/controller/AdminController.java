@@ -1,6 +1,5 @@
 package com.example.manageremployeeapp.controller;
 import com.example.manageremployeeapp.entity.admin;
-
 import com.example.manageremployeeapp.services.AdminServices;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -56,5 +55,16 @@ public class AdminController {
     public ResponseEntity<Void> deleteAdmin(@PathVariable Long id) {
         adminService.deleteById(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+    @DeleteMapping("/deleteMultiple")
+    public ResponseEntity<?> deleteMultiple(@RequestBody List<Long> ids) {
+        try {
+            for (Long id : ids) {
+                adminService.deleteById(id);
+            }
+            return ResponseEntity.ok().build();
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body("Failed to delete objects");
+        }
     }
 }
